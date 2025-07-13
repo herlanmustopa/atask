@@ -60,9 +60,67 @@ export const useGitHubSearch = () => {
     setUsers({ data: null, loading: true, error: null });
 
     try {
+      console.log("🔍 Searching for users:", query);
       const response = await GitHubApiService.searchUsers(query);
-      setUsers({ data: response.items, loading: false, error: null });
+      console.log("Search API response:", response);
+
+      // Get basic search results first
+      const basicUsers = response.items || [];
+      console.log("👥 Basic users found:", basicUsers.length);
+
+      if (basicUsers.length === 0) {
+        setUsers({ data: [], loading: false, error: null });
+        return;
+      }
+
+      setUsers({ data: basicUsers, loading: false, error: null });
+
+      console.log("Fetching detailed user data...");
+      const detailedUsersPromises = basicUsers.map(async (user, index) => {
+        try {
+          console.log(
+            `Fetching details for user ${index + 1}/${basicUsers.length}: ${
+              user.login
+            }`
+          );
+          const detailResponse = await GitHubApiService.getUserDetail(
+            user.login
+          );
+          console.log(`Got details for ${user.login}:`, {
+            repos: detailResponse.public_repos,
+            followers: detailResponse.followers,
+            following: detailResponse.followings,
+          });
+
+          return {
+            ...user,
+            public_repos: detailResponse.public_repos || 0,
+            followers: detailResponse.followers || 0,
+            following: detailResponse.followings || 0,
+            name: detailResponse.name || user.login,
+            bio: detailResponse.bio,
+            company: detailResponse.company,
+            location: detailResponse.location,
+            blog: detailResponse.blog,
+            created_at: detailResponse.created_at,
+          };
+        } catch (error) {
+          console.warn(`Failed to fetch details for ${user.login}:`, error);
+          return {
+            ...user,
+            public_repos: user.public_repos || 0,
+            followers: user.followers || 0,
+            following: user.followings || 0,
+          };
+        }
+      });
+
+      // Update with detailed data when available
+      const detailedUsers = await Promise.all(detailedUsersPromises);
+      console.log("Final detailed users:", detailedUsers);
+      setUsers({ data: detailedUsers, loading: false, error: null });
     } catch (error) {
+      console.error("Search users error:", error);
       setUsers({
         data: null,
         loading: false,

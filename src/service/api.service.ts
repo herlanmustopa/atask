@@ -12,18 +12,23 @@ class GitHubApiService {
 
     if (!response.ok) {
       if (response.status === 403) {
-        throw new Error("Rate limit exceeded. Please try again later.");
+        const rateLimitReset = response.headers.get('X-RateLimit-Reset');
+        const resetTime = rateLimitReset ? new Date(parseInt(rateLimitReset) * 1000).toLocaleTimeString() : 'unknown';
+        throw new Error(`Rate limit exceeded. Reset at ${resetTime}. Try again later.`);
       }
       if (response.status === 404) {
-        throw new Error("User or repository not found.");
+        throw new Error('User or repository not found.');
       }
-      throw new Error(
-        `GitHub API Error: ${response.status} - ${response.statusText}`
-      );
+      if (response.status === 422) {
+        throw new Error('Invalid search query.');
+      }
+      throw new Error(`GitHub API Error: ${response.status} - ${response.statusText}`);
     }
 
     return response.json();
   }
+
+  
 
   static async searchUsers(query: string): Promise<SearchUsersResponse> {
     const url = `${GITHUB_API_BASE}/search/users?q=${encodeURIComponent(

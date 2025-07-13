@@ -1,12 +1,12 @@
 export interface GitHubUser {
-    id: number;
-    login: string;
-    avatar_url: string;
-    html_url: string;
-    name?: string;
-    public_repos: number;
-    followers: number;
-    followings: number;
+  id: number;
+  login: string;
+  avatar_url: string;
+  html_url: string;
+  name?: string;
+  public_repos: number;
+  followers: number;
+  followings: number;
 }
 export interface GitHubUserDetail extends GitHubUser {
   bio?: string;
