@@ -2,21 +2,21 @@ export const GITHUB_API_BASE = 'https://api.github.com';
 export const ITEMS_PER_PAGE = 5;
 
 const LANGUAGE_COLORS: Record<string, string> = {
-  JavaScript: '#f1e05a',
-  TypeScript: '#2b7489',
-  Python: '#3572A5',
-  Java: '#b07219',
-  'C++': '#f34b7d',
-  'C#': '#239120',
-  C: '#555555',
-  HTML: '#e34c26',
-  CSS: '#1572B6',
-  Go: '#00ADD8',
-  Rust: '#dea584',
-  PHP: '#4F5D95',
-  Ruby: '#701516',
-  Swift: '#ffac45',
-  Kotlin: '#7F52FF',
+  JavaScript: "#f1e05a",
+  TypeScript: "#2b7489",
+  Python: "#3572A5",
+  Java: "#b07219",
+  "C++": "#f34b7d",
+  "C#": "#239120",
+  C: "#555555",
+  HTML: "#e34c26",
+  CSS: "#1572B6",
+  Go: "#00ADD8",
+  Rust: "#dea584",
+  PHP: "#4F5D95",
+  Ruby: "#701516",
+  Swift: "#ffac45",
+  Kotlin: "#7F52FF",
 };
 
 export const formatDate = (dateString: string): string => {

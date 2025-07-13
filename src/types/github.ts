@@ -8,6 +8,20 @@ export interface GitHubUser {
     followers: number;
     followings: number;
 }
+export interface GitHubUserDetail extends GitHubUser {
+  bio?: string;
+  location?: string;
+  blog?: string;
+  company?: string;
+  created_at?: string;
+}
+
+export interface GitHubFollower {
+  id: number;
+  login: string;
+  avatar_url: string;
+  html_url: string;
+}
 
 export interface Repository {
   id: number;
@@ -21,6 +35,19 @@ export interface Repository {
   private: boolean;
   topics: string[];
 }
+
+export interface UserAccordionProps {
+  users: GitHubUser[];
+  onUserSelect: (user: GitHubUser) => void;
+  query: string;
+}
+
+export interface ExpandedUserData {
+  repositories: Repository[];
+  loading: boolean;
+  error: string | null;
+}
+
 
 export interface ApiResponse<T> {
   data: T | null;

@@ -5,15 +5,18 @@ import { Github } from "lucide-react";
 import SearchForm from "./components/search";
 import ErrorMessage from "./components/ui/errorMessage";
 import UserList from "./components/users/userList";
-import RepositoryList from "./components/repository/repositoryList";
 
 const GitHubExplorer: React.FC = () => {
-  const [query, setQuery] = useState('');
-  const [selectedUser, setSelectedUser] = useState<GitHubUser | null>(null);
+  const [query, setQuery] = useState("");
   const [searchPerformed, setSearchPerformed] = useState(false);
-  
   const debouncedQuery = useDebounce(query, 300);
-  const { users, repositories, searchUsers, fetchRepositories, clearRepositories } = useGitHubSearch();
+  const {
+    users,
+    searchUsers,
+    fetchUserDetails,
+    fetchRepositories,
+    clearUserData,
+  } = useGitHubSearch();
 
   React.useEffect(() => {
     if (debouncedQuery.trim() && searchPerformed) {
@@ -23,70 +26,60 @@ const GitHubExplorer: React.FC = () => {
 
   const handleSearch = () => {
     setSearchPerformed(true);
-    setSelectedUser(null);
-    clearRepositories();
+    clearUserData();
     if (query.trim()) {
       searchUsers(query);
     }
   };
 
   const handleUserSelect = (user: GitHubUser) => {
-    setSelectedUser(user);
+    fetchUserDetails(user.login);
     fetchRepositories(user.login);
   };
-
   return (
-    <div className="container">
-      <div className="main-wrapper">
-        {/* Header */}
-        <div className="header">
-          <div className="header-title">
-            <Github size={32} />
-            <span>GitHub Explorer</span>
+    <>
+      {/* <style>{styles}</style> */}
+      <div className="container">
+        <div className="main-wrapper">
+          {/* Header */}
+          <div className="header">
+            <div className="header-title">
+              <Github size={32} />
+              <span>GitHub Explorer</span>
+            </div>
+            <p className="header-subtitle">
+              Search for GitHub users and explore their repositories, followers,
+              and following
+            </p>
           </div>
-          <p className="header-subtitle">
-            Search for GitHub users and explore their repositories
-          </p>
-        </div>
 
-        <SearchForm
-          query={query}
-          onQueryChange={setQuery}
-          onSearch={handleSearch}
-          loading={users.loading}
-        />
-
-        {users.error && (
-          <ErrorMessage
-            message={users.error}
-            onRetry={() => searchUsers(query)}
-          />
-        )}
-
-        {searchPerformed && users.data && !users.loading && (
-          <UserList
-            users={users.data}
-            onUserSelect={handleUserSelect}
+          {/* Search Form */}
+          <SearchForm
             query={query}
+            onQueryChange={setQuery}
+            onSearch={handleSearch}
+            loading={users.loading}
           />
-        )}
 
-        {repositories.error && selectedUser && (
-          <ErrorMessage
-            message={repositories.error}
-            onRetry={() => fetchRepositories(selectedUser.login)}
-          />
-        )}
+          {/* Error Message */}
+          {users.error && (
+            <ErrorMessage
+              message={users.error}
+              onRetry={() => searchUsers(query)}
+            />
+          )}
 
-        {selectedUser && (
-          <RepositoryList
-            repositories={repositories.data || []}
-            user={selectedUser}
-            loading={repositories.loading}
-          />
-        )}
+          {/* User Results */}
+          {searchPerformed && users.data && !users.loading && (
+            <UserList
+              users={users.data}
+              onUserSelect={handleUserSelect}
+              query={query}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

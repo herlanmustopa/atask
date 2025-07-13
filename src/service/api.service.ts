@@ -1,4 +1,4 @@
-import type { Repository, SearchUsersResponse } from "../types/github";
+import type { GitHubFollower, GitHubUserDetail, Repository, SearchUsersResponse } from "../types/github";
 import { GITHUB_API_BASE, ITEMS_PER_PAGE } from "../utils/constans";
 
 class GitHubApiService {
@@ -32,9 +32,24 @@ class GitHubApiService {
     return this.makeRequest<SearchUsersResponse>(url);
   }
 
+  static async getUserDetail(username: string): Promise<GitHubUserDetail> {
+    const url = `${GITHUB_API_BASE}/users/${username}`;
+    return this.makeRequest<GitHubUserDetail>(url);
+  }
+
   static async getUserRepositories(username: string): Promise<Repository[]> {
     const url = `${GITHUB_API_BASE}/users/${username}/repos?sort=updated&per_page=100`;
     return this.makeRequest<Repository[]>(url);
+  }
+
+  static async getUserFollowers(username: string): Promise<GitHubFollower[]> {
+    const url = `${GITHUB_API_BASE}/users/${username}/followers?per_page=30`;
+    return this.makeRequest<GitHubFollower[]>(url);
+  }
+
+  static async getUserFollowing(username: string): Promise<GitHubFollower[]> {
+    const url = `${GITHUB_API_BASE}/users/${username}/following?per_page=30`;
+    return this.makeRequest<GitHubFollower[]>(url);
   }
 }
 

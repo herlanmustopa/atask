@@ -2,25 +2,28 @@ import { User } from "lucide-react";
 import type { GitHubUser } from "../../types/github";
 import { formatNumber } from "../../utils/constans";
 
-interface UserCardProps {
+
+const UserCard: React.FC<{
   user: GitHubUser;
   onClick: (user: GitHubUser) => void;
-}
-
-const UserCard: React.FC<UserCardProps> = ({ user, onClick }) => {
+}> = ({ user, onClick }) => {
   return (
-    <div className="user-card" onClick={() => onClick(user)}>
-      <img src={user.avatar_url} alt={user.login} className="user-avatar" />
-      <div className="user-info">
-        <div className="user-name">{user.login}</div>
-        {user.name && <div className="user-fullname">{user.name}</div>}
+    <div className="user-card-inline" onClick={() => onClick(user)}>
+      <img
+        src={user.avatar_url}
+        alt={user.login}
+        className="user-avatar-inline"
+      />
+      <div className="user-info-inline">
+        <div className="user-name-inline">{user.login}</div>
+        {user.name && <div className="user-fullname-inline">{user.name}</div>}
       </div>
-      <div className="user-stats">
-        <div className="user-stat">
+      <div className="user-stats-inline">
+        <div className="user-stat-inline">
           <User size={16} />
-          <span>{formatNumber(user.public_repos)} repos</span>
+          <span>{formatNumber(user.public_repos || 0)} repos</span>
         </div>
-        <div>{formatNumber(user.followers)} followers</div>
+        <div>{formatNumber(user.followers || 0)} followers</div>
       </div>
     </div>
   );
