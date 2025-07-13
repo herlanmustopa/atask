@@ -1,6 +1,4 @@
 import { AlertCircle } from "lucide-react";
-import Card from "./cards";
-import Button from "./button";
 
 interface ErrorMessageProps {
     message: string;
@@ -9,19 +7,21 @@ interface ErrorMessageProps {
   
   const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onRetry }) => {
     return (
-      <Card className="p-4">
-        <div className="flex items-center gap-3 text-red-700">
-          <AlertCircle className="w-5 h-5 flex-shrink-0" />
-          <div className="flex-1">
-            <p>{message}</p>
-            {onRetry && (
-              <Button variant="secondary" size="sm" onClick={onRetry} className="mt-2">
-                Try Again
-              </Button>
-            )}
-          </div>
+      <div className="error-container">
+        <AlertCircle size={20} />
+        <div style={{ flex: 1 }}>
+          <p style={{ margin: 0 }}>{message}</p>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="btn btn-secondary"
+              style={{ marginTop: "0.5rem" }}
+            >
+              Try Again
+            </button>
+          )}
         </div>
-      </Card>
+      </div>
     );
   };
   

@@ -21,16 +21,18 @@ interface UserListProps {
     }
   
     return (
-      <Card className="p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900">
+       <div className="card">
+      <div className="card-padding">
+        <h2 className="section-title">
           Showing users for "{query}"
         </h2>
-        <div className="space-y-3">
+        <div className="user-list">
           {users.map((user) => (
             <UserCard key={user.id} user={user} onClick={onUserSelect} />
           ))}
         </div>
-      </Card>
+      </div>
+    </div>
     );
   };
 
