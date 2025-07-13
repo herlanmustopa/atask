@@ -17,7 +17,7 @@ A modern React TypeScript application for searching GitHub users and exploring t
 
 ## 🛠️ Tech Stack
 
-- **React 18** + TypeScript
+- **React 19.x.x** + TypeScript
 - **Vite** (build tool)
 - **GitHub API v3**
 - Custom CSS (responsive)
@@ -103,12 +103,63 @@ vercel
 
 ## 🧪 Testing
 
-Try these usernames:
-- `facebook` - Meta repositories
-- `microsoft` - Microsoft projects
-- `google` - Google open source
-- `vercel` - Vercel projects
-- `netflix` - Netflix tools
+This project uses a comprehensive testing setup with **Vitest** and **React Testing Library**.
+
+### Test Categories
+
+- **Unit Tests** - Individual components and functions
+- **Integration Tests** - Component interactions and data flow
+- **API Tests** - Service layer and network requests
+- **Hook Tests** - Custom React hooks
+- **E2E Scenarios** - Complete user workflows
+
+### Running Tests
+
+```bash
+# Run tests in watch mode
+npm run test
+
+# Run all tests once
+npm run test:run
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests with UI
+npm run test:ui
+
+# Debug tests
+npm run test:debug
+```
+
+### Test Coverage
+
+Current coverage thresholds:
+- **Statements**: >90%
+- **Branches**: >85% 
+- **Functions**: >90%
+- **Lines**: >90%
+
+### Writing Tests
+
+Tests are located in `src/test/__tests__/` and follow the pattern:
+- `ComponentName.test.tsx` for component tests
+- `hookName.test.tsx` for hook tests
+- `serviceName.test.ts` for service tests
+
+Example test:
+```typescript
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '../test/utils';
+import { ComponentName } from './ComponentName';
+
+describe('ComponentName', () => {
+  it('renders correctly', () => {
+    render(<ComponentName />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
 
 ## 👨‍💻 Development
 

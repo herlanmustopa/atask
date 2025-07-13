@@ -12,7 +12,7 @@ const SearchForm: React.FC<{
   };
 
   return (
-    <div className="card">
+    <div className="card" data-testid="loading-spinner">
       <div className="card-padding">
         <div className="search-form">
           <input

@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 
 .vercel
+# Testing
+coverage/
+coverage.lcov
+.nyc_output
+
+# Vitest
+.vitest/
